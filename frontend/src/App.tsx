@@ -3,12 +3,17 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import DiaryEntry from "./components/DiaryEntry";
 import DiaryEntryForm from "./components/DiaryEntryForm";
-import { getDiaryEntries } from "./services/diaryEntriesService";
-import { DiaryEntry as DiaryEntryType } from "./utils/types";
+import {
+  createDiaryEntry,
+  getDiaryEntries,
+} from "./services/diaryEntriesService";
+import { DiaryEntry as DiaryEntryType, NewDiaryEntry } from "./utils/types";
 
 const App = () => {
+  /* STATE */
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntryType[]>([]);
 
+  /* EFFECTS */
   useEffect(() => {
     try {
       getDiaryEntries().then((diaryEntries) => setDiaryEntries(diaryEntries));
@@ -17,11 +22,17 @@ const App = () => {
     }
   }, []);
 
+  /* HANDLERS */
+  const addDiaryEntry = async (newDiaryEntry: NewDiaryEntry) => {
+    const diaryEntry = await createDiaryEntry(newDiaryEntry);
+    setDiaryEntries([...diaryEntries, diaryEntry]);
+  };
+
   return (
     <div>
       <h1>Diary App</h1>
       <h2>Add new entry</h2>
-      <DiaryEntryForm />
+      <DiaryEntryForm addDiaryEntry={addDiaryEntry} />
       <h2>Diary entries</h2>
       <ul>
         {diaryEntries.map((diaryEntry) => (

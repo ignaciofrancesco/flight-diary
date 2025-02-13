@@ -1,4 +1,5 @@
 export enum Weather {
+  None = "",
   Rainy = "rainy",
   Sunny = "sunny",
   Windy = "windy",
@@ -7,6 +8,7 @@ export enum Weather {
 }
 
 export enum Visibility {
+  None = "",
   Great = "great",
   Good = "good",
   Ok = "ok",
@@ -20,3 +22,5 @@ export interface DiaryEntry {
   visibility: Visibility;
   comment: string;
 }
+
+export type NewDiaryEntry = Omit<DiaryEntry, "id">;
