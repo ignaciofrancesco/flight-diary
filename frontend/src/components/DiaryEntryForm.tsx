@@ -11,8 +11,8 @@ const DiaryEntryForm = (props: DiaryEntryFormProps) => {
 
   /* STATE */
   const [date, setDate] = useState("");
-  const [visibility, setVisibility] = useState<Visibility>(Visibility.None);
-  const [weather, setWeather] = useState<Weather>(Weather.None);
+  const [visibility, setVisibility] = useState<Visibility>(Visibility.Great);
+  const [weather, setWeather] = useState<Weather>(Weather.Rainy);
   const [comment, setComment] = useState("");
 
   /* HANDLERS */
@@ -29,10 +29,9 @@ const DiaryEntryForm = (props: DiaryEntryFormProps) => {
     addDiaryEntry(newDiaryEntry);
 
     // Only clear form if it succeded
-    addDiaryEntry(newDiaryEntry);
     setDate("");
-    setVisibility(Visibility.None);
-    setWeather(Weather.None);
+    setVisibility(Visibility.Great);
+    setWeather(Weather.Rainy);
     setComment("");
   };
 
@@ -42,31 +41,51 @@ const DiaryEntryForm = (props: DiaryEntryFormProps) => {
         <div>
           <label>Date: </label>
           <input
-            type="text"
+            type="date"
             value={date}
             onChange={(e) => {
               setDate(e.target.value);
             }}
           />
         </div>
-        <div>
-          <label>Visibility: </label>
-          <input
-            type="text"
-            value={visibility}
-            onChange={(e) => {
-              setVisibility(e.target.value as Visibility);
-            }}
-          />
-        </div>
-        <div>
-          <label>Weather: </label>
-          <input
-            type="text"
-            value={weather}
-            onChange={(e) => setWeather(e.target.value as Weather)}
-          />
-        </div>
+        <fieldset>
+          <legend>Visibility</legend>
+          {Object.values(Visibility).map((v) => {
+            return (
+              <div key={v}>
+                <input
+                  type="radio"
+                  id={v}
+                  name="visibility"
+                  onChange={() => {
+                    setVisibility(v);
+                  }}
+                  checked={v === visibility}
+                />
+                <label htmlFor={v}>{v}</label>
+              </div>
+            );
+          })}
+        </fieldset>
+        <fieldset>
+          <legend>Weather</legend>
+          {Object.values(Weather).map((w) => {
+            return (
+              <div key={w}>
+                <input
+                  type="radio"
+                  id={w}
+                  name="weather"
+                  onChange={() => {
+                    setWeather(w);
+                  }}
+                  checked={w === weather}
+                />
+                <label htmlFor={w}>{w}</label>
+              </div>
+            );
+          })}
+        </fieldset>
         <div>
           <label>Comment: </label>
           <input
